@@ -153,3 +153,6 @@ cython_debug/
 
 # connect db
 utils/config.py
+
+# db password
+secrets/*.txt

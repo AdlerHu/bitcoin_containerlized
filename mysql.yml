@@ -1,0 +1,56 @@
+version: '3.3'
+services:
+
+  mysql:
+      image: mysql:8.0
+      # 設定 mysql 使用原生認證的密碼 hash
+      container_name: mysql
+      command: mysqld --default-authentication-plugin=mysql_native_password
+      ports: 
+        # docker publish port 3306 to 3306 
+          - 3306:3306
+   
+      environment: # 環境變數, 設置 db, user, password, root_password
+          MYSQL_DATABASE: mydb
+          MYSQL_USER: user
+          MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+          MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+
+      secrets:
+          - source: mysql_password
+            target: /run/secrets/mysql_password
+
+          - source: mysql_root_password
+            target: /run/secrets/mysql_root_password
+
+      volumes:
+          - mysql:/var/lib/mysql
+          # share volumes of docker container to outside volume, let data persist
+      networks:
+          - dev
+
+  phpmyadmin:
+      image: phpmyadmin/phpmyadmin:5.1.0
+      container_name: phpmyadmin
+      links: 
+          - mysql:db
+      ports:
+          - 8000:80
+      depends_on:
+        - mysql
+      networks:
+          - dev
+
+# 使用 docker sercet 設定 db 密碼
+secrets:
+  mysql_password:
+      file: secrets/mysql_password.txt
+  mysql_root_password:
+      file: secrets/mysql_root_password.txt
+
+networks:
+  dev:
+
+volumes:
+  mysql:
+    external: true
