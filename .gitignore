@@ -152,7 +152,7 @@ cython_debug/
 #.idea/
 
 # connect db
-utils/config.py
+config.py
 
 # db password
 secrets/*.txt
