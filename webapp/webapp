@@ -1,0 +1,15 @@
+FROM python:3.10.6
+
+RUN apt-get update && \ 
+  # 安裝資料庫相關套件
+  apt-get install python3-dev default-libmysqlclient-dev build-essential -y && \
+  # 清除已經下載的 Package Lists，以釋放磁碟空間
+  rm -rf /var/lib/apt/lists/* && \
+  mkdir -p /webapp/templates/ && \
+  # 安裝 python 套件
+  pip install flask flask_bootstrap
+
+COPY . /webapp/
+WORKDIR /webapp/
+
+CMD python webapp.py

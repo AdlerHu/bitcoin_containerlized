@@ -35,7 +35,7 @@ def predict(model, predict_data_list):
 def get_unpredicted_data(connection):
     sql_str = '''SELECT h.future_date, h.bitcoin_price, h.gold_price, h.oil_price 
         FROM historical_data as h 
-        WHERE ( SELECT COUNT(1) FROM result as r WHERE h.future_date = r.date) = 0;'''
+        WHERE ( SELECT COUNT(1) FROM prediction as p WHERE h.future_date = p.date) = 0;'''
     data_row = pd.read_sql_query(sql_str, connection)    
     return data_row
 
