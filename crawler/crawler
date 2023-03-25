@@ -1,3 +1,4 @@
+# 選擇跟我環境同 Python 版本的基礎映像檔
 FROM python:3.10.6
 
 RUN apt-get update && \ 
@@ -5,11 +6,15 @@ RUN apt-get update && \
   apt-get install python3-dev default-libmysqlclient-dev build-essential -y && \
   # 清除已經下載的 Package Lists，以釋放磁碟空間
   rm -rf /var/lib/apt/lists/* && \
+  # 建立工作目錄
   mkdir /crawler && \
   # 安裝 python 套件
   pip install requests pandas lxml datetime pytz mysqlclient
 
+# 將程式執行時需要的檔案複製到工作目錄
 COPY . /crawler/
+# 指定程式執行時使用的工作目錄
 WORKDIR /crawler/
 
+# 啟動 Docker Container 時會執行的指令
 CMD python crawl_latest_price.py

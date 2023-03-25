@@ -13,4 +13,6 @@ COPY . /charts/
 WORKDIR /charts/
 
 CMD python charts.py
+# 將 Docker Volume 掛載到這個目錄，程式在這個目錄中所做的改變會儲存在 Docker Volume
+# 如此才可以將繪圖程式產生的圖形保存下來
 VOLUME [ "/charts/templates" ]
