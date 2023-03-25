@@ -1,3 +1,5 @@
+#!/bin/sh
+
 docker build -f /home/adlerhu/bitcoin_containerlized/crawler/crawler -t crawler:1.0.0 /home/adlerhu/bitcoin_containerlized/crawler/ &&
 docker build -f /home/adlerhu/bitcoin_containerlized/etl/etl -t etl:1.0.0 /home/adlerhu/bitcoin_containerlized/etl/ &&
 docker build -f /home/adlerhu/bitcoin_containerlized/predict/predict -t predict:1.0.0 /home/adlerhu/bitcoin_containerlized/predict/ &&
