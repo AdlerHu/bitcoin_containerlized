@@ -1,15 +1,26 @@
-FROM python:3.10.6
+# 使用 python3.10.6-slim 做基礎映像
+FROM python:3.10.6-slim
 
-RUN apt-get update && \ 
-  # 安裝資料庫相關套件
-  apt-get install python3-dev default-libmysqlclient-dev build-essential -y && \
-  # 清除已經下載的 Package Lists，以釋放磁碟空間
-  rm -rf /var/lib/apt/lists/* && \
-  mkdir /etl/ && \
-  # 安裝 python 套件
-  pip install datetime mysqlclient
+# 安裝資料庫相關套件
+RUN apt-get update && apt-get install python3-dev default-libmysqlclient-dev build-essential -y
 
+# 清除已經下載的 Package Lists，以釋放磁碟空間
+RUN rm -rf /var/lib/apt/lists/*
+
+# 安装python套件
+RUN pip install datetime mysqlclient
+
+# 清除緩存
+RUN rm -rf /root/.cache
+
+# 建立工作目錄
+RUN mkdir /etl/
+
+# 複製所需的文件
 COPY . /etl/
+
+# 指定工作目錄
 WORKDIR /etl/
 
-CMD python update_latest_data.py
+# 指定啟動時的命令
+CMD ["python", "update_latest_data.py"]

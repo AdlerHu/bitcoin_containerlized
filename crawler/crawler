@@ -1,20 +1,26 @@
-# 選擇跟我環境同 Python 版本的基礎映像檔
-FROM python:3.10.6
+# 使用 python3.10.6-slim 做基礎映像
+FROM python:3.10.6-slim
 
-RUN apt-get update && \ 
-  # 安裝資料庫相關套件
-  apt-get install python3-dev default-libmysqlclient-dev build-essential -y && \
-  # 清除已經下載的 Package Lists，以釋放磁碟空間
-  rm -rf /var/lib/apt/lists/* && \
-  # 建立工作目錄
-  mkdir /crawler && \
-  # 安裝 python 套件
-  pip install requests pandas lxml datetime pytz mysqlclient
+# 安裝資料庫相關套件
+RUN apt-get update && apt-get install python3-dev default-libmysqlclient-dev build-essential -y
 
-# 將程式執行時需要的檔案複製到工作目錄
+# 清除已經下載的 Package Lists，以釋放磁碟空間
+RUN rm -rf /var/lib/apt/lists/*
+
+# 安装python套件
+RUN pip install requests pandas lxml datetime pytz mysqlclient
+
+# 清除緩存
+RUN rm -rf /root/.cache
+
+# 建立工作目錄
+RUN mkdir /crawler/
+
+# 複製所需的文件
 COPY . /crawler/
-# 指定程式執行時使用的工作目錄
-WORKDIR /crawler/
 
-# 啟動 Docker Container 時會執行的指令
-CMD python crawl_latest_price.py
+# 指定工作目錄
+WORKDIR /crawler
+
+# 指定啟動時的命令
+CMD ["python", "crawl_latest_price.py"]
