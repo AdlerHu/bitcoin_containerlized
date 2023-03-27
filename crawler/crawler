@@ -20,7 +20,7 @@ RUN mkdir /crawler/
 COPY . /crawler/
 
 # 指定工作目錄
-WORKDIR /crawler
+WORKDIR /crawler/
 
 # 指定啟動時的命令
 CMD ["python", "crawl_latest_price.py"]
