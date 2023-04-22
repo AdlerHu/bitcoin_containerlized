@@ -21,4 +21,3 @@ Containerizing the project and then migrating it to the cloud.
 
 5. Confirm that the system migrated successfully
     - bitcoin_containerlized/daily.sh
-    - <cloud vm IP>:5000
